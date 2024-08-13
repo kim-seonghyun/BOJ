@@ -6,6 +6,7 @@
  * 수열은 사전 순으로 증가하는 순서로 출력해야 한다.
  */
 
+
 import java.util.*;
 import java.io.*;
 
@@ -15,6 +16,7 @@ public class Main {
     static int arr[];
     //탐색 중 
     static boolean visited[];
+    static StringBuilder sb = new StringBuilder();
     
     public static void main(String[] args) throws Exception{
         // TODO Auto-generated method stub
@@ -26,15 +28,16 @@ public class Main {
         arr = new int[M];
         visited = new boolean[N];
         dfs(N, M, 0);
+        System.out.println(sb);
     }
     
     public static void dfs(int N, int M, int depth) {
         // 만약 탐색 길이가 M 동일하면 출력
         if(depth == M) {
             for(int num : arr) {
-                System.out.print(num + " ");
+                sb.append(num).append(" ");
             }
-            System.out.println();
+            sb.append("\n");
             return;
         }
         
