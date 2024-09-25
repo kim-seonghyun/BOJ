@@ -1,108 +1,80 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.io.*;
 
-class Edge implements Comparable<Edge>{
-    int from;
-    int to;
-    int weight;
+public class Main {
+	public static int[] numbers;
+	static int n;
+	static int m;
 
-    public Edge(int from, int to, int weight) {
-        this.from = from;
-        this.to = to;
-        this.weight = weight;
-    }
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		n = Integer.parseInt(st.nextToken());
+		m = Integer.parseInt(st.nextToken());
+		Edge[] edges = new Edge[m];
 
-    @Override
-    public int compareTo(Edge o) {
-        return Integer.compare(this.weight, o.weight);
-    }
+		for (int i = 0; i < m; i++) {
+			st = new StringTokenizer(br.readLine());
+			Edge edge = new Edge(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()),
+					Integer.parseInt(st.nextToken()));
+			edges[i] = edge;
+		}
+		init();
+		Arrays.sort(edges);
+		int result = 0;
+
+		for (Edge edge : edges) {
+			if (union(edge.start, edge.end)) {
+				result += edge.power;
+			}
+		}
+
+		System.out.println(result);
+	}
+
+	public static void init() {
+		numbers = new int[n + 1];
+		for (int i = 1; i < n + 1; i++) {
+			numbers[i] = i;
+		}
+	}
+
+	public static int find(int target) {
+		if (target == numbers[target]) {
+			return target;
+		}
+
+		return numbers[target] = find(numbers[target]);
+	}
+
+	public static boolean union(int a, int b) {
+		int aFind = find(a);
+		int bFind = find(b);
+
+		if (aFind == bFind) {
+			return false;
+		}
+
+		numbers[aFind] = bFind;
+		return true;
+	}
 }
 
-/**
- * @author 김성현
- * 1. 문제설명 그래프의 최소 스패닝 트리 구하는 프로그램
- *
- * 2. input
- *
- * V E
- * E줄 (A B C)
- *
- * 3. output
- * 최소 스패닝 트리의 가중치
- *
- * 4. 해결방법
- * weight에는 음수가 포함되지만 크루스칼 알고리즘의 경우에 잘 동작할듯
- */
-public class Main {
-    static BufferedReader br;
-    static StringTokenizer st;
-    static int e;
-    static int v;
-    static ArrayList<Edge> board;
-    static int[] parents;
+class Edge implements Comparable<Edge> {
+	int start;
+	int end;
+	int power;
 
-    public static void main(String[] args) throws IOException {
-        inputValue();
-        make();
-        long costs = getMinimumCost();
-        System.out.println(costs);
-    }
+	Edge(int start, int end, int power) {
+		this.start = start;
+		this.end = end;
+		this.power = power;
+	}
 
-    private static int find(int value){
-        if(parents[value] == value) return value;
-        return parents[value] = find(parents[value]);
+	@Override
+	public int compareTo(Edge o) {
 
-    }
+		return this.power - o.power;
+	}
 
-    private static boolean union(int v1, int v2){
-        int aroot = find(v1);
-        int broot = find(v2);
-
-        if(aroot == broot) return false;
-        parents[aroot] = broot;
-        return true;
-    }
-
-    private static long getMinimumCost() {
-        Collections.sort(board);
-        int cnt= 0;
-        long cost = 0;
-        for(Edge edge: board){
-            if(union(edge.from,edge.to)){
-                cost += edge.weight;
-                if(++cnt == v-1) return cost;
-            }
-        }
-        return cost;
-    }
-
-    private static void make() {
-        parents = new int[v+1];
-        for(int i=0; i< parents.length; i++){
-            parents[i] = i;
-        }
-    }
-
-    private static void inputValue() throws IOException {
-        br = new BufferedReader(new InputStreamReader(System.in));
-        st = new StringTokenizer(br.readLine());
-        board = new ArrayList<>();
-        v = Integer.parseInt(st.nextToken());
-        e = Integer.parseInt(st.nextToken());
-
-
-        for(int i =0; i<e; i++){
-            st = new StringTokenizer(br.readLine());
-            int from = Integer.parseInt(st.nextToken());
-            int to = Integer.parseInt(st.nextToken());
-            int weight = Integer.parseInt(st.nextToken());
-            board.add(new Edge(from, to, weight));
-        }
-
-
-    }
 }
