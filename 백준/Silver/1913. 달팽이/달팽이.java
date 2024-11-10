@@ -1,65 +1,63 @@
+
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
-class Main{
-    static BufferedReader br;
-    static int N;
-    static int tagetNumber;
 
-    static int[] xDir = {1, 0 ,-1, 0};
-    static int[] yDir = {0, 1, 0 ,-1};
-    
-    static int currentDir = 0;
+
+public class Main {
+    static BufferedReader br;
+
+    static int n;
+    static int target;
 
     static int[][] board;
-    public static void main(String[] args) throws NumberFormatException, IOException {
-        inputValue();
-        
-        int startNumber = N*N;
-        
-        int cX = -1;
-        int cY = 0;
-        for(int i=startNumber; i>=1; i--){
-            int nx= cX + xDir[currentDir];
-            int ny = cY  + yDir[currentDir];
 
-            if(nx < 0 || nx >= N || ny < 0 || ny >=N || board[nx][ny] > 0){
+    static int[] dx = {1,0, -1, 0};
+    static int[] dy = {0, 1, 0, -1};
+
+    static int currentDirection = 0;
+    public static void main(String[] args) throws Exception {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        n = Integer.parseInt(br.readLine());
+
+        target = Integer.parseInt(br.readLine());
+
+        board = new int[n][n];
+        
+        int cx = -1;
+        int cy = 0;
+
+        int number = n*n;
+
+        while(true){
+            if(number == 0){
                 break;
             }
-            cX = nx;
-            cY = ny;
-            board[cX][cY] = i;
-            
+            int nx = cx + dx[currentDirection];
+            int ny = cy + dy[currentDirection];
 
-            nx= cX + xDir[currentDir];
-            ny = cY  + yDir[currentDir];
-
-            if(nx < 0 || nx >= N || ny < 0 || ny >=N || board[nx][ny] > 0){
-               currentDir =  (currentDir + 1) %4;
+            if(nx >=0 && nx < n && ny >=0 && ny < n && board[nx][ny] == 0){
+                cx = nx;
+                cy = ny;
+                board[cx][cy] = number;
+                number--;
+            }else{
+                currentDirection = (currentDirection + 1) % 4;
             }
         }
-        int targetX = -1;
-        int targetY = -1;
-        for(int i=0; i<N; i++){
-            for(int j=0; j<N; j++){
-                if(board[i][j] == tagetNumber){
-                    targetX = i + 1;
-                    targetY = j + 1;
+
+        int tx = -1;
+        int ty= -1;
+        for(int i=0; i<n; i++){
+            for(int j=0; j<n; j++){
+                if(board[i][j] == target){
+                    tx = i + 1;
+                    ty = j + 1;
                 }
-                System.out.print(board[i][j]+ " ");
+                System.out.print(board[i][j] + " ");
             }
             System.out.println();
         }
-        System.out.println(targetX + " " + targetY);
-    }
-
-    private static void inputValue() throws NumberFormatException, IOException {
-        br = new BufferedReader(new InputStreamReader(System.in));
-        N = Integer.parseInt(br.readLine());
-        tagetNumber = Integer.parseInt(br.readLine());
-
-        board = new int[N][N];
-        
+        System.out.println(tx + " " + ty);
     }
 }
