@@ -2,11 +2,11 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class Main{
 
 	// 정점 U를 루트로 하는 서브트리에 속한 정점의 수 -> 연결된 정점의 수
 	static int N, R, Q, dp[];
-	static LinkedList<Integer>[] list;
+	static List<Integer>[] list;
 
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -16,10 +16,10 @@ public class Main {
 		R = Integer.parseInt(st.nextToken());
 		Q = Integer.parseInt(st.nextToken());
 
-		list = new LinkedList[N + 1];
+		list = new ArrayList[N + 1];
 		dp = new int[N+1];
 		for (int i = 1; i < N + 1; i++) {
-			list[i] = new LinkedList<>();
+			list[i] = new ArrayList<>();
 		}
 
 		for (int i = 0; i < N - 1; i++) {
